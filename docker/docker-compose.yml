@@ -1,0 +1,9 @@
+﻿version: "3.8"
+services:
+  folderscope:
+    build: .
+    environment:
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+    volumes:
+      - ./:/workspace
+    command: ["node","dist/cli/index.js","--help"]
