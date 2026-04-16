@@ -1,6 +1,16 @@
 {
-  "exclude": ["**/*.jpg","**/*.jpeg","**/*.png","**/*.gif","**/*.mp4","**/*.mov"],
-  "concurrency": 4,
-  "mistral_api_key_env": "MISTRAL_API_KEY",
-  "output_dir": "./folderscope-output"
+  "ai": {
+    "provider": "openai",
+    "model": "gpt-4",
+    "apiKey": "your-api-key-here"
+  },
+  "scanner": {
+    "exclude": ["node_modules", ".git", "dist"],
+    "concurrency": 4,
+    "cacheEnabled": true
+  },
+  "output": {
+    "dir": "./output",
+    "format": "md"
+  }
 }
