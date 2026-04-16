@@ -1,4 +1,4 @@
-﻿{
+{
   "exclude": ["**/*.jpg","**/*.jpeg","**/*.png","**/*.gif","**/*.mp4","**/*.mov"],
   "concurrency": 4,
   "mistral_api_key_env": "MISTRAL_API_KEY",
