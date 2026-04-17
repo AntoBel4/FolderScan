@@ -1,4 +1,7 @@
+#!/usr/bin/env node
 import { Command } from 'commander';
+import { runScan, formatScanResult } from './commands';
+
 const program = new Command();
 
 program
@@ -10,8 +13,9 @@ program
   .command('scan <path>')
   .description('Scan a folder and generate reports')
   .option('--dry-run', 'Do not write files')
-  .action((path, opts) => {
-    console.log('Stub: scan', path, opts);
+  .action(async (path: string, opts: any) => {
+    const res = await runScan(path, { dryRun: !!opts.dryRun });
+    console.log(formatScanResult(res.path, res.count));
     process.exit(0);
   });
 
@@ -24,3 +28,5 @@ program
   });
 
 program.parse(process.argv);
+
+export default program;
