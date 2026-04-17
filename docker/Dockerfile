@@ -1,14 +1,24 @@
-﻿# docker/Dockerfile
-FROM node:20-alpine AS build
+﻿# Multi-stage Dockerfile for FolderScope AI
+FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci || true
+COPY package*.json ./
+RUN npm ci
 COPY . .
-RUN npm run build || true
+RUN npm run build
 
 FROM node:20-alpine
 WORKDIR /app
-COPY --from=build /app/dist ./dist
-COPY package.json ./
-RUN npm ci --production || true
-ENTRYPOINT ["node", "dist/cli/index.js"]
+RUN apk add --no-cache tini
+
+# Copy built artifacts from builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY package*.json ./
+
+# Create .folderscope cache directory
+RUN mkdir -p .folderscope
+RUN chmod 777 .folderscope
+
+# Use tini to handle signals properly
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "dist/cli/index.js", "--help"]
