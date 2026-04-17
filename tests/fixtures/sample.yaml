@@ -1,0 +1,7 @@
+name: FolderScope
+version: 0.1.0
+description: AI-powered folder scanner
+features:
+  - scan
+  - extract
+  - report

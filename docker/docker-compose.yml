@@ -1,9 +1,40 @@
 ﻿version: "3.8"
+
 services:
   folderscope:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: folderscope-dev
     environment:
-      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - NODE_ENV=development
+      - AI_KEY=${AI_KEY:-}
     volumes:
-      - ./:/workspace
-    command: ["node","dist/cli/index.js","--help"]
+      - ..:/workspace
+      - /workspace/node_modules
+    working_dir: /workspace
+    command: npm run dev
+    ports:
+      - "3000:3000"
+
+  lint:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: folderscope-lint
+    volumes:
+      - ..:/workspace
+      - /workspace/node_modules
+    working_dir: /workspace
+    command: npm run lint
+
+  test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: folderscope-test
+    volumes:
+      - ..:/workspace
+      - /workspace/node_modules
+    working_dir: /workspace
+    command: npm test
